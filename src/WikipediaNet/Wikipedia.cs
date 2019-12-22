@@ -1,9 +1,14 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.InteropServices;
+using System.Web.WebSockets;
 using RestSharp;
 using RestSharp.Deserializers;
 using RestSharp.Serialization.Json;
 using RestSharp.Serialization.Xml;
+using WikiDatabase;
 using WikipediaNet.Enums;
 using WikipediaNet.Misc;
 using WikipediaNet.Objects;
@@ -12,11 +17,14 @@ namespace WikipediaNet
 {
     public class Wikipedia
     {
+        private Dictionary<int, bool> alreadyInDb = new Dictionary<int, bool>();
         private static readonly RestClient _client = new RestClient();
         private Format _format;
+        WikiDatabase.WikiDatabase db = new WikiDatabase.WikiDatabase();
 
         public Wikipedia(Language language = Language.Russian)
         {
+            db.Connect();
             Language = language;
             Format = Format.XML;
 
@@ -97,7 +105,7 @@ namespace WikipediaNet
         /// </summary>
         public string RequestID { get; set; }
 
-        public QueryResult GetBacklinks(string title = "Гитлер, Адольф")
+        public QueryResult GetBacklinks(string title, int pageId, QueryResult previousLevel)
         {
             //https://en.wikipedia.org/w/api.php?action=query&list=backlinks&bltitle=Adolf%20Hitler&bllimit=50
             _client.BaseUrl = new Uri(string.Format(UseTLS ? "https://{0}.wikipedia.org/w/" : "http://{0}.wikipedia.org/w/", Language.GetStringValue()));
@@ -114,6 +122,8 @@ namespace WikipediaNet
                 request.AddParameter("list", "backlinks");
                 request.AddParameter("bltitle", title);
                 request.AddParameter("bllimit", "5000");
+                request.AddParameter("prop", "info");
+
                 if (continueString != "start")
                 {
                     request.AddParameter("blcontinue", continueString);
@@ -148,6 +158,36 @@ namespace WikipediaNet
                     }
                 }
 
+            }
+
+            var resultsToSave = allResults.Search;
+
+            //if (previousLevel != null)
+            //{
+            //    var distinctList = allResults.Search.GroupBy(
+            //        i => i.Title,
+            //        (key, group) => group.First()).ToList();
+            //    List<Search> withoutFirstLevel = distinctList.Where(x => previousLevel.Search.All(y => y.Title != x.Title)).ToList();
+            //    resultsToSave = withoutFirstLevel;
+            //}
+
+            foreach (var resultToSave in resultsToSave)
+            {
+                if (!alreadyInDb.ContainsKey(resultToSave.PageId))
+                {
+                    Article articleToSave = new Article(resultToSave.PageId, resultToSave.Title, "", 0, 0, 0,
+                        previousLevel == null ? 1 : 2);
+                    db.AddArticle(articleToSave);
+                    alreadyInDb.Add(resultToSave.PageId, true);
+                }
+
+                if (previousLevel != null)
+                    db.UpdatePreviousLevelData(resultToSave.PageId, pageId);
+            }
+
+            if (previousLevel != null)
+            {
+                db.AddBackLinksToArticle(resultsToSave.Count, title);
             }
 
             return allResults;

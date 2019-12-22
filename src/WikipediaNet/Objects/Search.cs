@@ -46,6 +46,9 @@ namespace WikipediaNet.Objects
         [DeserializeAs(Name = "hasrelated")]
         public string HasRelated { get; set; }
 
+        [DeserializeAs(Name = "pageid")]
+        public int PageId { get; set; }
+
         /// <summary>
         /// The URI that points to the wikipedia page that contains the title.
         /// Note: Normalization of the title occurs automatically.

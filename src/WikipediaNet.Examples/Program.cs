@@ -26,14 +26,14 @@ namespace WikipediaNet.Examples
             //We would like to search inside the articles
             wikipedia.What = What.Text;
 
-            QueryResult results = wikipedia.GetBacklinks();
+            QueryResult results = wikipedia.GetBacklinks("Гитлер, Адольф", 0, null);
 
             QueryResult secondLevelResults = new QueryResult() {Search = new List<Search>()};
             int i = 1;
             foreach (var result in results.Search)
             {
                 Console.WriteLine($"Checking {i} out of 2730 pages. Title: {result.Title}");
-                var backlinks = wikipedia.GetBacklinks(result.Title);
+                var backlinks = wikipedia.GetBacklinks(result.Title, result.PageId, results);
                 secondLevelResults.Search.AddRange(backlinks.Search);
                 Console.WriteLine($"Backlinks from the page: {backlinks.Search.Count}");
                 Console.WriteLine($"Total links after search: {secondLevelResults.Search.Count}");
