@@ -12,6 +12,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Imports", "Imports", "{7FC5
 		..\Properties.targets = ..\Properties.targets
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WikiDatabase", "WikiDatabase\WikiDatabase.csproj", "{34B2B0C2-BE69-4377-93A8-1DCA50F2C698}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -46,6 +48,18 @@ Global
 		{63FCBD6B-8A40-4901-8003-04C17B390DDA}.Release|x64.Build.0 = Release|Any CPU
 		{63FCBD6B-8A40-4901-8003-04C17B390DDA}.Release|x86.ActiveCfg = Release|Any CPU
 		{63FCBD6B-8A40-4901-8003-04C17B390DDA}.Release|x86.Build.0 = Release|Any CPU
+		{34B2B0C2-BE69-4377-93A8-1DCA50F2C698}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{34B2B0C2-BE69-4377-93A8-1DCA50F2C698}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{34B2B0C2-BE69-4377-93A8-1DCA50F2C698}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{34B2B0C2-BE69-4377-93A8-1DCA50F2C698}.Debug|x64.Build.0 = Debug|Any CPU
+		{34B2B0C2-BE69-4377-93A8-1DCA50F2C698}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{34B2B0C2-BE69-4377-93A8-1DCA50F2C698}.Debug|x86.Build.0 = Debug|Any CPU
+		{34B2B0C2-BE69-4377-93A8-1DCA50F2C698}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{34B2B0C2-BE69-4377-93A8-1DCA50F2C698}.Release|Any CPU.Build.0 = Release|Any CPU
+		{34B2B0C2-BE69-4377-93A8-1DCA50F2C698}.Release|x64.ActiveCfg = Release|Any CPU
+		{34B2B0C2-BE69-4377-93A8-1DCA50F2C698}.Release|x64.Build.0 = Release|Any CPU
+		{34B2B0C2-BE69-4377-93A8-1DCA50F2C698}.Release|x86.ActiveCfg = Release|Any CPU
+		{34B2B0C2-BE69-4377-93A8-1DCA50F2C698}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

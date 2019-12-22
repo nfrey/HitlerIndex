@@ -1,20 +1,41 @@
-# Introduction 
-TODO: Give a short introduction of your project. Let this section explain the objectives or the motivation behind this project. 
+# Wikipedia.NET - An implementation of the full text search API of Wikipedia
 
-# Getting Started
-TODO: Guide users through getting your code up and running on their own system. In this section you can talk about:
-1.	Installation process
-2.	Software dependencies
-3.	Latest releases
-4.	API references
+[![NuGet](https://img.shields.io/nuget/v/WikipediaNet.svg?style=flat-square&label=nuget)](https://www.nuget.org/packages/WikipediaNet/)
 
-# Build and Test
-TODO: Describe and show how to build your code and run the tests. 
+### Features
 
-# Contribute
-TODO: Explain how other users and developers can contribute to make your code better. 
+* Based on RestSharp (http://restsharp.org) to deserialize the Wikipedia XML into objects
+* Support for all 283 languages on Wikipedia
+* Full support for all search parameters
 
-If you want to learn more about creating good readme files then refer the following [guidelines](https://docs.microsoft.com/en-us/azure/devops/repos/git/create-a-readme?view=azure-devops). You can also seek inspiration from the below readme files:
-- [ASP.NET Core](https://github.com/aspnet/Home)
-- [Visual Studio Code](https://github.com/Microsoft/vscode)
-- [Chakra Core](https://github.com/Microsoft/ChakraCore)
+### Examples
+
+Here is the simplest form of getting data from Wikipedia:
+
+```csharp
+static void Main(string[] args)
+{
+	Wikipedia wikipedia = new Wikipedia();
+	wikipedia.Limit = 5;
+	
+	QueryResult results = wikipedia.Search("Microsoft C#");
+
+	Console.WriteLine("Found " + results.Search.Count + " English results:");
+
+	foreach (Search s in results.Search)
+	{
+		Console.WriteLine(s.Url);
+	}
+}
+```
+
+Output:
+```
+http://en.wikipedia.org/wiki/Visual C++
+http://en.wikipedia.org/wiki/Microsoft Visual C Sharp
+http://en.wikipedia.org/wiki/Microsoft Roslyn
+http://en.wikipedia.org/wiki/C Sharp (programming language)
+http://en.wikipedia.org/wiki/Microsoft Visual Studio
+```
+
+For more examples, take a look at the Wikipedia.Examples included in the project.
