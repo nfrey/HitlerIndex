@@ -26,37 +26,22 @@ namespace WikipediaNet.Examples
             //We would like to search inside the articles
             wikipedia.What = What.Text;
 
-            QueryResult results = wikipedia.GetBacklinks("Гитлер, Адольф", 0, null);
+            // var previous = wikipedia.GetPreviousLevel();
+            //var allDb = wikipedia.GetAllFromDb();
 
-            QueryResult secondLevelResults = new QueryResult() {Search = new List<Search>()};
-            int i = 1;
-            foreach (var result in results.Search)
-            {
-                Console.WriteLine($"Checking {i} out of 2730 pages. Title: {result.Title}");
-                var backlinks = wikipedia.GetBacklinks(result.Title, result.PageId, results);
-                secondLevelResults.Search.AddRange(backlinks.Search);
-                Console.WriteLine($"Backlinks from the page: {backlinks.Search.Count}");
-                Console.WriteLine($"Total links after search: {secondLevelResults.Search.Count}");
-                i++;
-            }
+            var getPrevLevel = wikipedia.GetPreviosLevelByTitle(4);
+            //var getLevel = wikipedia.GetPreviousLevel(4);
+            var a = wikipedia.GetMissingArticleFromDb();
 
-            var a = File.OpenWrite("C:\\Private\\GitlerScript\\HitlerScript.txt");
-            StreamWriter writer = new StreamWriter(a);
+            //wikipedia.FixLevel4(getPrevLevel, getLevel.Keys.ToList());
+            wikipedia.FindArticlesWithoutBacklinks(a.Keys.ToList());
 
-            List<string> distinctList = secondLevelResults.Search.Select(x => x.Title).Distinct().ToList();
-            List<string> withoutFirstLevel = distinctList.Where(x => results.Search.All(y => y.Title != x)).ToList();
-
-            var c = withoutFirstLevel.Count;
-            foreach (Search s in results.Search)
-            {
-                writer.WriteLine($"{s.Title}  {s.Url}");
-                //Console.WriteLine(s.Title);
-            }
-
-            writer.Close();
+            // Level to check has to be +1 to one used in GetPreviousLevelByTitle
+            wikipedia.ProcessArticlesByForwardLinks(5, getPrevLevel, a.Keys.ToList());
+            
+            //wikipedia.FindMissingArticles(allDb);
+           
             Console.WriteLine();
-            Console.WriteLine();
-
         }
     }
 }
